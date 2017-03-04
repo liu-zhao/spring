@@ -18,7 +18,7 @@ public class User implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column
-	private String account;
+	private String username;
 	@Column
 	private String password;
 	@Column
@@ -26,115 +26,55 @@ public class User implements java.io.Serializable {
 	@Column
 	private String tel;
 	@Column
-	private String address;
-	@Column
-	private String postcode;
-	@Column
-	private String name;
-	@Column
-	private String createdate;
+	private String role;
 	@Column
 	private String status;
-
-	public User() {
-	}
-
-	public User(String account, String password) {
-		this.account = account;
-		this.password = password;
-	}
-
-	public User(String account, String password, String email, String tel, String address, String postcode, String name,
-			String createdate, String status) {
-		this.account = account;
-		this.password = password;
-		this.email = email;
-		this.tel = tel;
-		this.address = address;
-		this.postcode = postcode;
-		this.name = name;
-		this.createdate = createdate;
-		this.status = status;
-	}
-
+	
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
-
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public String getAccount() {
-		return this.account;
+	public String getUsername() {
+		return username;
 	}
-
-	public void setAccount(String account) {
-		this.account = account;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
 	public String getPassword() {
-		return this.password;
+		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	public String getTel() {
-		return this.tel;
+		return tel;
 	}
-
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-
-	public String getAddress() {
-		return this.address;
+	public String getRole() {
+		return role;
 	}
-
-	public void setAddress(String address) {
-		this.address = address;
+	public void setRole(String role) {
+		this.role = role;
 	}
-
-	public String getPostcode() {
-		return this.postcode;
-	}
-
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCreatedate() {
-		return this.createdate;
-	}
-
-	public void setCreatedate(String createdate) {
-		this.createdate = createdate;
-	}
-
 	public String getStatus() {
-		return this.status;
+		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
+	
+
+
 
 }

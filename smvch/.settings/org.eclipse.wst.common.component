@@ -3,6 +3,7 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_system"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_project"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src_config"/>
         <property name="context-root" value="smvch"/>
         <property name="java-output-path" value="/smvch/build/classes"/>
     </wb-module>

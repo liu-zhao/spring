@@ -13,7 +13,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form action="<%=path %>/lg/login" method="post" name="form">
+<form action="<%=path%>/user/login" method="post">
 <table border="1" width="250" height="150" align="center">
 <tr>
 <td>用户名:</td> <td> <input type="text" name="username"/></td>
