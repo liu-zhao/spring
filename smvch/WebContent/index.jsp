@@ -10,21 +10,28 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/signin.css" rel="stylesheet">
+
 <title>Insert title here</title>
 </head>
 <body>
-<form action="<%=path%>/user/login" method="post">
-<table border="1" width="250" height="150" align="center">
-<tr>
-<td>用户名:</td> <td> <input type="text" name="username"/></td>
-</tr>
-<tr>
-<td>密&nbsp码:</td> <td><input type="password" name="password"/></td>
-</tr>
-<tr>
-<td><input type="submit" name="submit" value="登陆"/></td>
-</tr>
-</table>
-</form>
+ <div class="container">
+
+      <form class="form-signin" action="<%=path%>/user/login" method="post">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" id="inputUsername" class="form-control" name="username" placeholder="Username" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
 </body>
 </html>
