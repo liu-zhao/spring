@@ -1,2 +1,4 @@
 /com/
 /test/
+/hibernate.properties
+/hibernate.cfg.xml

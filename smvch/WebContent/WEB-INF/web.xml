@@ -4,9 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
 	<display-name>nssh</display-name>
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
+	
 
 	<!-- 配置Spring IOC 容器(Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔此参数用于后面的Spring Context Loader) -->	
 	<!-- 
