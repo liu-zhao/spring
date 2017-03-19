@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.le.ac.core.dao.HibernateDao;
 import com.le.ac.core.hibernate.SimpleHibernateDaoImpl;
+import com.le.ac.core.util.Page;
 import com.le.ac.project.model.Function;
 import com.le.ac.project.model.Role_func;
 import com.le.ac.project.model.User;
 import com.le.ac.project.service.UserService;
-@Component
+@Service
+@Transactional
 public class UserServiceImpl<T> extends HibernateDao<T> implements UserService{
 	
 	
@@ -22,6 +24,10 @@ public class UserServiceImpl<T> extends HibernateDao<T> implements UserService{
 		String hql="from User t where t.username=? and t.password=?";
 		List list=super.find(hql, u.getUsername(),u.getPassword());
 		User user = null;
+		if(list.size()==0)
+		{
+			return null;
+		}
 		try {
 			user =(User) list.get(0);
 		} catch (Exception e) {
@@ -81,6 +87,90 @@ public class UserServiceImpl<T> extends HibernateDao<T> implements UserService{
 			userList.add(u);
 		}
 		return userList;
+	}
+	/**
+	 * returnMessage is 0 means that insert operating successed
+	 * 1 means that update operating successed!
+	 */
+	@Override
+	public int saveOrUpdateUser(User u) {
+		int flag=1;
+		this.update(u);
+		return flag;
+	}
+
+	@Override
+	public boolean saveNewUser(User u){
+		User user  = getUser(u);
+		if(user !=null)
+		{
+			return false;
+		}
+		super.save(u);
+		return true;
+	}
+
+	@Override
+	public Page<T> getUserByRole(User u) throws Exception {
+		Page<T> userList = new Page<>();
+		if(u.getRole()==0)
+		{
+			//superAdmin
+			userList = this.getAll(userList);
+		}
+		if(u.getRole()==10)
+		{
+			//normal admin
+			String hql="from User u where u.role != ?";
+			userList = this.findPage(userList, hql, 0);
+			//userList = super.find(hql,0);
+		}
+		if(u.getRole()==11)
+		{
+			//normal user
+			
+		}
+		return userList;
+		
+	}
+
+	@Override
+	public boolean deleteUser(User u) throws Exception {
+		this.delete(u);
+		return true;
+	}
+
+	@Override
+	public Page getAllUser(User u) throws Exception {
+		Page userlist = new Page<>();
+		if(u.getRole()==0)
+		{
+			//superAdmin
+			userlist = this.findPage(userlist, "from User u where u.status=?",0);
+		}
+		if(u.getRole()==10)
+		{
+			//normal admin
+			String hql="from User u where u.role != ?";
+			userlist = this.findPage(userlist, hql,0);
+		}
+		if(u.getRole()==11)
+		{
+			//normal user
+			//userlist.add(u);
+			List list = new ArrayList<>();
+			list.add(u);
+			userlist.setResult(list);
+		}
+		return userlist;
+	}
+
+	@Override
+	public int updateUser(User u) throws Exception {
+		
+		this.update(u);
+		//this.getSession().flush();
+		return 1;
 	}
 	
 }

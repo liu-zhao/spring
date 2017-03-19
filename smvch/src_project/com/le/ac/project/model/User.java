@@ -1,6 +1,7 @@
 package com.le.ac.project.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -8,6 +9,7 @@ import javax.persistence.Table;
 @Table(name="user")
 public class User {
 	@Id
+	@GeneratedValue
 	private int uid;
 	private String username;
 	private String password;

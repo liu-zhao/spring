@@ -13,7 +13,7 @@ import com.google.common.collect.Sets;
  * 与具体ORM实现无关的属性过滤条件封装类. <br>
  * PropertyFilter主要记录页面中简单的搜索过滤条件,比Hibernate的Criterion要简单.
  * 
- * @author vashon
+ * @author vashon 
  */
 public class PropertyFilter {
 	/** 多个属性间OR关系的分隔符. */

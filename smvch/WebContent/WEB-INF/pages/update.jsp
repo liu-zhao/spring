@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<%
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
@@ -104,16 +103,17 @@ function Check()  // 验证表单数据有效性
 <body>
 <div id="content">
   <div class="container">
-    <form  id="form" action="<%=path%>/user/addUser" method="post" class="form-horizontal" onSubmit="return Check()" name="send">
+    <form  id="form" action="<%=path%>/user/updateUser" method="post" class="form-horizontal" onSubmit="return Check()" name="send">
       <div class="row">
-        <h1 class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 page_title ">注册</h1>
+        <h1 class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 page_title ">修改信息</h1>
       </div>
+      <input type="text" id="id" name="uid" style="display: false" value="${user.uid }"/>
       <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1 register">
             <div class="form-group">
-              <label for="username" class="col-sm-3 control-label">用户名：</label>
+              <label for="username" class="col-sm-3 control-label">用户名:</label>
               <div class="col-sm-8">
                 <div class="input-group">
-                <input type="text" class="form-control" name="username" placeholder="请输入用户名">
+                <input type="text" class="form-control" name="username" value="${user.username }">
                <div class="input-group-addon">
                <span class="glyphicon glyphicon-user"></span>
                </div>
@@ -124,29 +124,19 @@ function Check()  // 验证表单数据有效性
               <label for="password" class="col-sm-3 control-label">密码：</label>
               <div class="col-sm-8">
                 <div class="input-group">
-                <input type="password" class="form-control" name="password" placeholder="请输入密码（六位以上）">
+                <input type="text" class="form-control" name="password" value=${user.password }">
                <div class="input-group-addon">
                <span class="glyphicon glyphicon-lock"></span>
                </div>
              </div>
             </div>
             </div>
-            <div class="form-group">
-              <label for="chkpwd" class="col-sm-3 control-label">确认密码：</label>
-              <div class="col-sm-8">
-                <div class="input-group">
-                <input type="password" class="form-control" name="chkpwd" placeholder="请确认密码">
-               <div class="input-group-addon">
-               <span class="glyphicon glyphicon-exclamation-sign"></span>
-               </div>
-             </div>
-            </div>
-            </div>
+           
             <div class="form-group">
               <label for="email" class="col-sm-3 control-label">邮箱：</label>
               <div class="col-sm-8">
                 <div class="input-group">
-                <input type="text" class="form-control" name="email" placeholder="请输入有效邮箱">
+                <input type="text" class="form-control" name="email" value="${user.email }">
                <div class="input-group-addon">
                <span class="glyphicon glyphicon-envelope"></span>
                </div>

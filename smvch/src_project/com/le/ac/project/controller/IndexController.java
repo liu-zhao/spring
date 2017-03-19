@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.le.ac.project.model.User;
 import com.le.ac.project.service.UserService;
-
+/**
+ * 
+ * @author liu
+ *
+ */
 @Controller
 @RequestMapping("/")
 public class IndexController {
@@ -35,9 +39,6 @@ public class IndexController {
 		if(user != null){
 			HttpSession session =  request.getSession();
 			session.setAttribute("user", user);
-//			List flist = userService.getFunctionByUser(user);
-			request.setAttribute("user", user);
-//			request.setAttribute("flist", flist);
 		return "frameset";
 		}
 		System.out.println("fail!");
@@ -55,7 +56,7 @@ public class IndexController {
 	{
 		User user= (User) request.getSession().getAttribute("user");	
 		List flist = userService.getFunctionByUser(user);
-		request.setAttribute("user", user);
+		
 		request.setAttribute("flist", flist);
 		return "menu";
 	}

@@ -19,7 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <ul class="nav nav-sidebar">
             <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
             <c:forEach var="flist" items="${flist }">
-            <li><a href="<%=path %>${flist.function.url}?userid=${user.uid}" target="content">${flist.function.name }</a></li>
+            <li><a href="<%=path %>${flist.function.url}" target="content">${flist.function.name }</a></li>
             </c:forEach>
             <li><a href="<%=path%>/" target="_top">返回登陆页面</a></li>
           </ul>
