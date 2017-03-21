@@ -1,8 +1,11 @@
 package com.le.ac.project.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,9 @@ import com.le.ac.core.util.Page;
 import com.le.ac.project.model.Function;
 import com.le.ac.project.model.User;
 import com.le.ac.project.service.UserService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("user")
@@ -130,6 +136,36 @@ public class UserController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
+	}
+	@RequestMapping("deleteList")
+	public String deleteList(HttpServletRequest request)
+	{
+		String userids[] = request.getParameterValues("checkbox");
+		
+		return null;
+	}
+	@RequestMapping("deleteajax")
+	public String deleteajax(HttpServletRequest request,HttpServletResponse response)
+	{
+		String uid = request.getParameter("uid");
+		String uuu = request.getParameter("uuu");
+		System.out.println(uid+"!!!"+uuu);
+		PrintWriter out= null;
+		String value="ok";
+		String str="{\"name\":\""+value+"\"}";
+		
+//		JSONObject json = new JSONObject();
+//		json.put("ok", value);
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.write(str);
+		out.flush();
+		out.close();
 		return null;
 	}
 	

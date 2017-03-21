@@ -8,6 +8,7 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+out.println(path);
 %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -33,7 +34,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
           <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">用户查看</div>
-
+	<form action="<%=path%>/user/deleteList" method="post">
+	 <script type="text/javascript">
+    $(function(){
+        //$('table tr:not(:first)').remove();
+        var len = $('table tr').length;
+        for(var i = 1;i<len;i++){
+            $('table tr:eq('+i+') td:first').text(i);
+        }
+            
+});
+    </script>
   <!-- Table -->
   <table class="table" id="table">
    <tr>
@@ -45,10 +56,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <td>用户状态</td>
     <td>操作</td>
     </tr>
+   
     <c:forEach var="user" items="${pageList}">
     <tr>
-    <td><input type="text" id="id" hidden="true" value="${user.uid }"/>
-    <input type="checkbox" id ="select" onclick="sendId()">
+    
+    <td></td>
+   
+    <td><input type="text" id="id-1" hidden="true" value="${user.uid }"/>
+    <input type="checkbox" name="checkbox" id ="select" value="${user.uid }" onclick="sendId()">
     </td>
     <td>${user.username}</td>
     <td>${user.email }</td>
@@ -69,10 +84,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <p>正常</p></c:if>
    </td>
    <td><a href="<%=path%>/user/update?uid=${user.uid}">修改信息</a></td>
+   <td>
+   <input type="button" id="delete" class="btn btn-info" value="删除" onclick="deleteajax()"></td>
+   
     </tr>
     </c:forEach>
    
   </table>
+  <input type="submit" class="btn btn-info" value="批量删除"/>
+  </form>
+   <script type="text/javascript">
+   function deleteajax()
+   {
+	   var uid=$('#id-1').val();
+	  // alert(window.location.pathname);
+	   
+	   url='/smvch/user/deleteajax';
+	   $.ajax({
+		   url:url,
+		   type: "POST",
+		   data:{"uid":uid,"uuu":'uuu'},
+		   success: function (data) {
+               alert(data);
+           }
+		   });
+	}
+   </script>
 </div>
 </div>
 </body>
