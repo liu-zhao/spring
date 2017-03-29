@@ -3,6 +3,7 @@ package com.le.ac.project.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.le.ac.core.dao.HibernateDao;
 import com.le.ac.core.hibernate.SimpleHibernateDaoImpl;
 import com.le.ac.core.util.Page;
+import com.le.ac.core.util.Pager;
 import com.le.ac.project.model.Function;
 import com.le.ac.project.model.Role_func;
 import com.le.ac.project.model.User;
@@ -147,6 +149,7 @@ public class UserServiceImpl<T> extends HibernateDao<T> implements UserService{
 		{
 			//superAdmin
 			userlist = this.findPage(userlist, "from User u where u.status=?",0);
+			
 		}
 		if(u.getRole()==10)
 		{
@@ -171,6 +174,37 @@ public class UserServiceImpl<T> extends HibernateDao<T> implements UserService{
 		this.update(u);
 		//this.getSession().flush();
 		return 1;
+	}
+
+	@Override
+	public Pager getAllUserPager(User u, String currentPage, String pageSize) throws Exception {
+		if(u.getRole()==0)
+		{
+			//superAdmin
+			StringBuffer hql = new StringBuffer("from User u where u.status=0");
+			if (!StringUtils.isEmpty(u.getUsername())) {
+			return this.pagedQuery(hql.toString(), currentPage, pageSize);
+			}
+			
+		}
+		if(u.getRole()==10)
+		{
+			//normal admin
+			StringBuffer hql = new StringBuffer(
+					"from User u where u.status=0 and u.role!=0");
+			if (!StringUtils.isEmpty(u.getUsername())) {	
+			return this.pagedQuery(hql.toString(), currentPage, pageSize);
+			}
+		}
+		if(u.getRole()==11)
+		{
+			StringBuffer hql = new StringBuffer(
+					"from User u where u.status=0 and u.role!=0 u.uid="+u.getUid());
+			if (!StringUtils.isEmpty(u.getUsername())) {
+			return this.pagedQuery(hql.toString(), currentPage, pageSize);
+			}
+		}
+		return null;
 	}
 	
 }

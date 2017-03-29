@@ -27,15 +27,14 @@ out.println(path);
 </script>  
 
 
-<body>
+<body onload="getUser()">
 
 <div class="container">
           
           <div class="panel panel-default">
   <!-- Default panel contents -->
   <div class="panel-heading">用户查看</div>
-   
-	<form action="<%=path%>/user/getUser" method="post">
+	<form action="<%=path%>/user/deleteList" method="post">
 	 <script type="text/javascript">
     $(function(){
         //$('table tr:not(:first)').remove();
@@ -46,7 +45,6 @@ out.println(path);
             
 });
     </script>
-   
   <!-- Table -->
   <table class="table" id="table">
    <tr>
@@ -59,7 +57,7 @@ out.println(path);
     <td>操作</td>
     </tr>
    
-    <c:forEach var="user" items="${pager.data}">
+    <c:forEach var="user" items="${pageList}">
     <tr>
     
     <td></td>
@@ -93,33 +91,17 @@ out.println(path);
     </c:forEach>
    
   </table>
-  <jsp:include page="./common/Page.jsp" />
   <input type="submit" class="btn btn-info" value="批量删除"/>
   </form>
-  
    <script type="text/javascript">
-   function deleteajax()
-   {
-	   var uid=$('#id-1').val();
-	  // alert(window.location.pathname);
-	   
-	   url='/smvch/user/deleteajax';
-	   $.ajax({
-		   url:url,
-		   type: "POST",
-		   data:{"uid":uid,"uuu":'uuu'},
-		   success: function (result,status) {
-			  result= $.parseJSON(result)
-            $.each(result,function(i,obj){            
-               str="index: "+i+" uid: "+obj.uid+" username: "+obj.username;
-               $('#showuser').append('<p>'+str+'</p>');
-                });
-           
-           }
-		   });
-
-	  
-	}
+   	function getUser()
+   	{
+   	   var userlist = ${arr};
+   		$.each(userlist,function(i,obj){            
+        str="index: "+i+" uid: "+obj.uid+" username: "+obj.username;
+        $('#showuser').append('<p>'+str+'</p>');
+         });	
+   	 }
    </script>
    
    <div class="panel-heading">

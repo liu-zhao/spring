@@ -26,7 +26,7 @@ public class Page<T> {
 	protected boolean autoCount = true;
 
 	// -- 返回结果 --//
-	protected List<T> result = Lists.newArrayList();
+	protected List<T> result ;
 	protected long totalCount = -1;
 
 	// -- 构造函数 --//

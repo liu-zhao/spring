@@ -24,5 +24,6 @@
 	<mvc:default-servlet-handler />
 	<!-- 配置开启注解 -->
 	<mvc:annotation-driven/>
-
+	
+	
 </beans>

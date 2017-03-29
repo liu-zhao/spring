@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.le.ac.core.util.Pager;
 import com.le.ac.core.util.Page;
 import com.le.ac.project.model.Function;
 import com.le.ac.project.model.User;
@@ -77,16 +78,21 @@ public class UserController {
 	public String getUser(HttpServletRequest request)
 	{
 		User u = (User)request.getSession().getAttribute("user");
-		Page pageList = null;
+		
+		String pageSize = request.getParameter("pageSize");
+		String currentPage = request.getParameter("currentPage");
+		
+		Pager pageList = null;
+		//Page pageList = null;
 		try {
-			pageList=userService.getAllUser(u);
+			pageList=userService.getAllUserPager(u, currentPage, pageSize);
 			
-			if(pageList.getTotalCount()==-1)
+			if(pageList.data.size()==0)
 			{
 				return "/error";
 			}
-			List userList=userService.getAllUserByRole(u);
-			request.setAttribute("pageList", userList);
+			//List userList=userService.getAllUserByRole(u);
+			request.setAttribute("pager", pageList);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -154,19 +160,61 @@ public class UserController {
 		PrintWriter out= null;
 		String value="ok";
 		String str="{\"name\":\""+value+"\"}";
+		User u = (User) request.getSession().getAttribute("user");
 		
-//		JSONObject json = new JSONObject();
-//		json.put("ok", value);
+		JSONArray arr = new JSONArray();
+		//json.put("ok", value);
 		try {
 			out = response.getWriter();
+			List<User> userList = userService.getAllUserByRole(u);
+			if(userList.size()==0)
+			{
+				return null;
+			}
+			for (int i = 0; i < userList.size(); i++) {
+				JSONObject json = new JSONObject();
+				json.put("uid", userList.get(i).getUid());
+				json.put("username", userList.get(i).getUsername());
+				json.put("password", userList.get(i).getPassword());
+				json.put("email", userList.get(i).getEmail());
+				json.put("tel", userList.get(i).getTel());
+				json.put("role", userList.get(i).getRole());
+				json.put("status", userList.get(i).getStatus());
+				arr.add(json);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		out.write(str);
+		out.print(arr.toString());
 		out.flush();
 		out.close();
 		return null;
+	}
+	
+	@RequestMapping("getByJson")
+	public String getUserByJson(HttpServletRequest request)
+	{
+		User u = (User) request.getSession().getAttribute("user");
+		List<User> userList = userService.getAllUserByRole(u);
+		JSONArray arr = new JSONArray();
+		if(userList.size()==0)
+		{
+			return null;
+		}
+		for (int i = 0; i < userList.size(); i++) {
+			JSONObject json = new JSONObject();
+			json.put("uid", userList.get(i).getUid());
+			json.put("username", userList.get(i).getUsername());
+			json.put("password", userList.get(i).getPassword());
+			json.put("email", userList.get(i).getEmail());
+			json.put("tel", userList.get(i).getTel());
+			json.put("role", userList.get(i).getRole());
+			json.put("status", userList.get(i).getStatus());
+			arr.add(json);
+		}
+		request.setAttribute("arr", arr);
+		return "/getUserByJson";
 	}
 	
 }

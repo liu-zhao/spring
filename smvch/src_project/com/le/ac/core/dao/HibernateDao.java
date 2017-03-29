@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.google.common.collect.Sets;
+import com.le.ac.core.util.Pager;
 import com.le.ac.core.hibernate.SimpleHibernateDaoImpl;
 import com.le.ac.core.util.Page;
 import com.le.ac.core.util.PropertyFilter;
@@ -56,6 +59,77 @@ public class HibernateDao<T> extends SimpleHibernateDaoImpl<T>{
 	}
 
 	/****************** 分页查询函数 ******************/
+	/**
+	 * 分页查询函数，使用hql.
+	 * 
+	 * @param pageNo
+	 *            页号,�?1�?�?.
+	 */
+	public Pager pagedQuery(String hql, int pageNo, int pageSize,
+			Object... values) {
+		Assert.hasText(hql);
+		// Assert.isTrue(pageNo >= 1, "pageNo should start from 1");
+		// Count查询
+		String countQueryString = (" select count (*) " + removeSelect(removeOrders(hql)))
+				.replaceAll("fetch", "");
+		List countlist = find(countQueryString, values);
+		long totalCount = (Long) countlist.get(0);
+
+		if (totalCount < 1)
+			return new Pager(pageNo, pageSize);
+
+		pageNo = Pager.validPageNo(pageNo, pageSize, totalCount);
+		// 实际查询返回分页对象
+		int startIndex = Pager.getStartOfPage(pageNo, pageSize);
+		Query query = createQuery(hql, values);
+		List list = query.setFirstResult(startIndex).setMaxResults(pageSize)
+				.list();
+
+		return new Pager(pageNo, pageSize, totalCount, list);
+	}
+	public Pager pagedQuery(String hql, String pageNo, String pageSize,
+			Object... values) {
+		int intPageNo = 1;
+		int intPageSize = 10;
+		if (pageNo != null && !"".equals(pageNo))
+			intPageNo = Integer.parseInt(pageNo);
+		if (pageSize != null && !"".equals(pageSize))
+			intPageSize = Integer.parseInt(pageSize);
+		Pager pager = pagedQuery(hql, intPageNo, intPageSize, values);
+		return pager;
+
+	}
+	/**
+	 * 去除hql的orderby 子句，用于pagedQuery.
+	 * 
+	 * @see #pagedQuery(String,int,int,Object[])
+	 */
+	private static String removeOrders(String hql) {
+		Assert.hasText(hql);
+		Pattern p = Pattern.compile("order\\s*by[\\w|\\W|\\s|\\S]*",
+				Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(hql);
+		StringBuffer sb = new StringBuffer();
+		while (m.find()) {
+			m.appendReplacement(sb, "");
+		}
+		m.appendTail(sb);
+		return sb.toString();
+	}
+	/**
+	 * 去除hql的select 子句，未考虑union的情�?,用于pagedQuery.
+	 * 
+	 * @see #pagedQuery(String,int,int,Object[])
+	 */
+	private static String removeSelect(String hql) {
+		Assert.hasText(hql);
+		int beginPos = hql.toLowerCase().indexOf("from");
+		Assert.isTrue(beginPos != -1, " hql : " + hql
+				+ " must has a keyword 'from'");
+		return hql.substring(beginPos);
+	}
+	
+/*****************************************/	
 	/**
 	 * 分页获取全部对象.
 	 */
@@ -105,7 +179,7 @@ public class HibernateDao<T> extends SimpleHibernateDaoImpl<T>{
 	 */
 	public Page<T> findPage(final Page<T> page, final String hql, final Map<String, ?> values) {
 		Assert.notNull(page, "page不能为空");
-
+		
 		Query q = createQuery(hql, values);
 
 		if (page.isAutoCount()) {
